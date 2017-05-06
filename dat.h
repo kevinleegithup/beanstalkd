@@ -153,12 +153,17 @@ struct job {
     /* bookeeping fields; these are in-memory only */
     char pad[6];
     tube tube;
+    /////what?
     job prev, next; /* linked list of jobs */
+    
+    /////内存位置
     job ht_next;    /* Next job in a hash table list */
     size_t heap_index; /* where is this job in its current heap */
+    /////文件位置
     File *file;
     job  fnext;
     job  fprev;
+    
     void *reserver;
     int walresv;
     int walused;
@@ -167,8 +172,10 @@ struct job {
 };
 
 struct tube {
+    /////通过引用计数的方式自动释放消失。
     uint refs;
     char name[MAX_TUBE_NAME_LEN];
+    /////通过堆维护
     Heap ready;
     Heap delay;
     struct ms waiting; /* set of conns */
@@ -181,14 +188,12 @@ struct tube {
 };
 
 
-#define twarn(fmt, args...) warn("%s:%d in %s: " fmt, \
-                                 __FILE__, __LINE__, __func__, ##args)
-#define twarnx(fmt, args...) warnx("%s:%d in %s: " fmt, \
-                                   __FILE__, __LINE__, __func__, ##args)
+#define twarn(fmt, args...) warn("%s:%d in %s: "   fmt,__FILE__, __LINE__, __func__, ##args)
+#define twarnx(fmt, args...) warnx("%s:%d in %s: " fmt,__FILE__, __LINE__, __func__, ##args)
 
-void warn(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
+void warn(const char *fmt, ...)  __attribute__((format(printf, 1, 2)));
 void warnx(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
-char* fmtalloc(char *fmt, ...) __attribute__((format(printf, 1, 2)));
+char* fmtalloc(char *fmt, ...)   __attribute__((format(printf, 1, 2)));
 void* zalloc(int n);
 #define new(T) zalloc(sizeof(T))
 void optparse(Server*, char**);
