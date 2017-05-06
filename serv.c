@@ -20,6 +20,7 @@ srvserve(Server *s)
     Socket *sock;
     int64 period;
 
+    ////epoll创建
     if (sockinit() == -1) {
         twarnx("sockinit");
         exit(1);
