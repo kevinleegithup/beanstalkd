@@ -1,6 +1,8 @@
 // Requirements:
 // #include <stdint.h>
 // #include <stdlib.h>
+////kevinleegithup 唯一头文件
+
 
 typedef unsigned char uchar;
 typedef uchar         byte;
@@ -10,6 +12,7 @@ typedef uint32_t      uint32;
 typedef int64_t       int64;
 typedef uint64_t      uint64;
 
+////kevinleegithup 通过宏屏蔽_t类型 编译报错
 #define int8_t   do_not_use_int8_t
 #define uint8_t  do_not_use_uint8_t
 #define int32_t  do_not_use_int32_t
