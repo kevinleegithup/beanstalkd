@@ -20,6 +20,7 @@ typedef uint64_t      uint64;
 #define int64_t  do_not_use_int64_t
 #define uint64_t do_not_use_uint64_t
 
+/////kevinleegithup   1.typpedef指针  2.申明
 typedef struct ms     *ms;
 typedef struct job    *job;
 typedef struct tube   *tube;
@@ -31,12 +32,14 @@ typedef struct Socket Socket;
 typedef struct Server Server;
 typedef struct Wal    Wal;
 
+/////kevinleegithup 类似函数声明
 typedef void(*ms_event_fn)(ms a, void *item, size_t i);
 typedef void(*Handle)(void*, int rw);
 typedef int(*Less)(void*, void*);
 typedef void(*Record)(void*, int);
 typedef int(FAlloc)(int, int);
 
+/////kevinleegithup 64位long ptr
 #if _LP64
 #define NUM_PRIMES 48
 #else
@@ -60,6 +63,7 @@ typedef int(FAlloc)(int, int);
 #define URGENT_THRESHOLD 1024
 #define JOB_DATA_SIZE_LIMIT_DEFAULT ((1 << 16) - 1)
 
+/////申明 
 extern const char version[];
 extern int verbose;
 extern struct Server srv;
@@ -78,17 +82,21 @@ struct stats {
 };
 
 
+/////kevinleegithup堆数据结构
 struct Heap {
     int     cap;
     int     len;
     void    **data;
+    /////kevinleegithup 比较函数
     Less    less;
     Record  rec;
 };
+/////kevinleegithup 堆插入、堆删除
 int   heapinsert(Heap *h, void *x);
 void* heapremove(Heap *h, int k);
 
 
+/////kevinleegithup 封装epoll
 struct Socket {
     int    fd;
     Handle f;
@@ -99,6 +107,7 @@ int sockinit(void);
 int sockwant(Socket*, int);
 int socknext(Socket**, int64);
 
+/////kevinleegithup 链表
 struct ms {
     size_t used, cap, last;
     void **items;
@@ -120,6 +129,7 @@ enum // Jobrec.state
     Copy
 };
 
+/////kevinleegithup 版本兼容问题
 // if you modify this struct, you must increment Walver above
 struct Jobrec {
     uint64 id;
@@ -144,7 +154,7 @@ struct job {
     char pad[6];
     tube tube;
     job prev, next; /* linked list of jobs */
-    job ht_next; /* Next job in a hash table list */
+    job ht_next;    /* Next job in a hash table list */
     size_t heap_index; /* where is this job in its current heap */
     File *file;
     job  fnext;
