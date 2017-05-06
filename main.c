@@ -9,6 +9,7 @@
 #include <fcntl.h>
 #include "dat.h"
 
+/////lkb setuid和setgid的解说setuid和setgid位是让普通用户可以以root用户的角色运行只有root帐号才能运行的程序或命令
 static void
 su(const char *user) 
 {
@@ -54,6 +55,7 @@ main(int argc, char **argv)
     struct job list = {};
 
     progname = argv[0];
+    ////setlinebuf()用来设置文件流以换行为依据的无缓冲IO. 相当于调用:setvbuf(stream, (char*)NULL, _IOLBF, 0);请参考setvbuf().
     setlinebuf(stdout);
     optparse(&srv, argv+1);
 
@@ -61,6 +63,7 @@ main(int argc, char **argv)
         printf("pid %d\n", getpid());
     }
 
+    ////监听端口
     r = make_server_socket(srv.addr, srv.port);
     if (r == -1) twarnx("make_server_socket()"), exit(111);
     srv.sock.fd = r;
@@ -70,6 +73,7 @@ main(int argc, char **argv)
     if (srv.user) su(srv.user);
     set_sig_handlers();
 
+    /////持久化，先从日志中取出来放入队列，然后重放入数据结构，那原来的文件怎么处理？从新开始，之前的废除掉即可
     if (srv.wal.use) {
         // We want to make sure that only one beanstalkd tries
         // to use the wal directory at a time. So acquire a lock
