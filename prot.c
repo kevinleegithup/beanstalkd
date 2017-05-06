@@ -1987,6 +1987,7 @@ prot_init()
         exit(50);
     }
 
+    ////生成随机数放到id中
     int i, r;
     byte rand_data[NumIdBytes];
     r = read(dev_random, &rand_data, NumIdBytes);
@@ -2006,6 +2007,7 @@ prot_init()
 
     ms_init(&tubes, NULL, NULL);
 
+    ////创建默认的tube
     TUBE_ASSIGN(default_tube, tube_find_or_make("default"));
     if (!default_tube) twarnx("Out of memory during startup!");
 }
